@@ -16,8 +16,7 @@
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "zod": "^3.25.7",
-    "zod-to-openapi": "^0.2.1"
+    "zod": "^3.25.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.18",

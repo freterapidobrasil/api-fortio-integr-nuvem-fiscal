@@ -15,7 +15,6 @@ export const emitirMdfe = async (req: Request<{}, {}, MdfeInput>, res: Response)
   try {
     debug('m=emitirMdfe Iniciando emissão de MDF-e...');
 
-
     // const response = await axios.post(
     //   'https://auth.nuvemfiscal.com.br/oauth/token',
     //   new URLSearchParams({
@@ -36,6 +35,9 @@ export const emitirMdfe = async (req: Request<{}, {}, MdfeInput>, res: Response)
  
       const dadosMdfe = req.body; // ← Aqui você pega os dados validados
       
+       console.log("Inicio do processo de envio de MDF-e")
+      console.log(dadosMdfe)
+
       const service = new MdfeService();
       const resultado = await service.emitirMdfe(dadosMdfe);
       res.status(200).json(resultado);
