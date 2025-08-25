@@ -7,11 +7,15 @@ type MdfeInput = z.infer<typeof MdfeDTO>;
 
 export class MDFeRepository {
   async emitir(token: string, dados: MdfeInput) {
+
+    console.log("OBJETO ENVIADO PARA NUVEM")
+    console.log(dados)
+
     try {
       //  'https://api.nuvemfiscal.com.br/mdfe',
       // https://api.sandbox.nuvemfiscal.com.br/mdfe
       const response = await axios.post(
-        'https://api.sandbox.nuvemfiscal.com.br/mdfe',
+        'https://api.sandbox.nuvemfiscal.com.br/mdfe', 
         dados,
         {
           headers: {
