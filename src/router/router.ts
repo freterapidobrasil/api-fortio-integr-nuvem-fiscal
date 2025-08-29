@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { emitirMdfe } from '../controller/MDFeController';
+import { downloadMdfe } from '../controller/MDFeController';
 import { emitirMdfeSchema } from '../middleware/mdfeSchema';
 import { validateBody } from '../middleware/validate';
 
@@ -95,5 +96,10 @@ const router = Router();
  */
 
 router.post('/api/send-mdfe', validateBody(emitirMdfeSchema), emitirMdfe);
+
+// Rota para download PDF/XML
+router.get("/mdfe/:id/:tipo/:status", (req, res, next) => {
+    downloadMdfe(req, res).catch(next);
+});
 
 export default router;
