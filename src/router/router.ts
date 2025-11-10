@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import { emitirMdfe } from '../controller/MDFeController';
-import { downloadMdfe } from '../controller/MDFeController';
-import { emitirMdfeSchema } from '../middleware/mdfeSchema';
-import { validateBody } from '../middleware/validate';
+import { Router } from "express";
+import { getCancellationStatuOfTheMDFe, DownloadDamdfePDF, emitirMdfe, encerrarMdfe, DownloadTheClosingPDF } from "../controller/MDFeController";
+import { downloadMdfe } from "../controller/MDFeController";
+import { emitirMdfeSchema } from "../middleware/mdfeSchema";
+import { validateBody } from "../middleware/validate";
 
 const router = Router();
 
@@ -95,11 +95,35 @@ const router = Router();
  *               type: string
  */
 
-router.post('/api/send-mdfe', validateBody(emitirMdfeSchema), emitirMdfe);
+router.post("/api/send-mdfe", validateBody(emitirMdfeSchema), emitirMdfe);
+
+// Rota para encerrar um MDF-e
+router.post("/api/mdfe/:id/encerrar", (req, res, next) => {
+  encerrarMdfe(req, res).catch(next);
+});
 
 // Rota para download PDF/XML
 router.get("/mdfe/:id/:tipo/:status", (req, res, next) => {
-    downloadMdfe(req, res).catch(next);
+  downloadMdfe(req, res).catch(next);
 });
+
+// Rota para consultar cancelamento
+router.get("/api/mdfe/:id/consultar-cancelamento-MDF-e", (req, res, next) => {
+  getCancellationStatuOfTheMDFe(req, res).catch(next);
+});
+
+// Rota para download DAMDFE
+router.get("/api/mdfe/:id/DAMDFE/PDF", (req, res, next) => {
+  DownloadDamdfePDF(req, res).catch(next);
+});
+
+// Rota para download encerramento
+router.get("/api/mdfe/:id/encerramento/pdf", (req, res, next) => {
+  DownloadTheClosingPDF(req, res).catch(next);
+});
+
+
+
+
 
 export default router;
