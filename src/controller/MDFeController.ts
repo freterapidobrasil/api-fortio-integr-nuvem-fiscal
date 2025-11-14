@@ -226,6 +226,54 @@ export const getCancellationStatuOfTheMDFe = async (
   }
 };
 
+export const cancellationOfTheMDFe = async (
+  req: Request<{ id: string }, {}>,
+  res: Response
+) => {
+  try {
+    
+    const service = new MdfeService();
+
+    const idMdfe = idMdfeSchema.safeParse(req.params);
+    const dadosCancelamento = req.body;
+
+    debug(
+      `Controlador: Iniciando  cancelamento do MDF-e ID: ${idMdfe}`
+    );
+
+    debug("MDF-e ID: ", idMdfe.data?.id);
+
+    if (!idMdfe.success) {
+      const errors = idMdfe.error.issues.map((issue) => issue.message);
+      const field = idMdfe.error.issues[0].path?.[0] || "id";
+
+      return res.status(400).json({
+        success: false,
+        issues: errors,
+        field,
+        data: null,
+      });
+    }
+
+    const result = await service.cancellationOfTheMDFe(idMdfe.data?.id, dadosCancelamento);
+    res.status(200).json(result);
+  } catch (error: any) {
+    if (error.status) {
+      debug("Erro da API ao Consultar o cancelamento do MDF-e: ", error.data);
+      res.status(error.status).json(error.data);
+    } else {
+      debug(
+        "Erro interno ao Consultar o cancelamento do MDF-e: ",
+        error.message
+      );
+      res.status(500).json({
+        erro:
+          error.message || "Erro interno ao Consultar o cancelamento do MDF-e",
+      });
+    }
+  }
+};
+
 /**
  * @description Baixa o DAMDFE do MDF-e
  * @param {Request<{ id: string }, {}, void>} req

@@ -100,9 +100,7 @@ export class MDFeRepository {
    * @throws {Error} - Se a API da Nuvem Fiscal retornar um erro.
    */
   async getCancellationStatuOfTheMDFe(token: string, id: string) {
-
     try {
-      
       const response = await axios.get(
         `https://api.sandbox.nuvemfiscal.com.br/mdfe/${id}/cancelamento`,
         {
@@ -120,15 +118,41 @@ export class MDFeRepository {
           data: error.response.data,
         };
       }
-      
     }
   }
 
+  async cancellationOfTheMDFe(
+    token: string,
+    id: string,
+    dadosCancelamento: any
+  ) {
+    try {
+      const response = await axios.post(
+        `https://api.sandbox.nuvemfiscal.com.br/mdfe/${id}/cancelamento`,
+        dadosCancelamento,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error("ERRO AO CONSULTAR O CANCELAMENTO DO MDF-e:");
+      if (error.response) {
+        console.error(JSON.stringify(error.response.data, null, 2));
+        debug(error.response.data);
+        throw {
+          status: error.response.status,
+          data: error.response.data,
+        };
+      }
+    }
+  }
 
   async downloadDamdfePDF(token: string, id: string) {
-
     try {
-      
       const response = await axios.get(
         `https://api.sandbox.nuvemfiscal.com.br/mdfe/${id}/pdf`,
         {
@@ -146,14 +170,11 @@ export class MDFeRepository {
           data: error.response.data,
         };
       }
-      
     }
   }
 
   async DownloadTheClosingPDF(token: string, id: string) {
-
     try {
-      
       const response = await axios.get(
         `https://api.sandbox.nuvemfiscal.com.br/mdfe/${id}/encerramento/pdf`,
         {
@@ -171,7 +192,6 @@ export class MDFeRepository {
           data: error.response.data,
         };
       }
-      
     }
   }
 }

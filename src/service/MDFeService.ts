@@ -43,8 +43,11 @@ export class MdfeService {
       dadosEncerramento
     );
 
+    debug("===================== MdfeService ===========================");
     debug("MDF-e encerrado com sucesso através do serviço.");
     console.log("Resposta do encerramento: ", resposta);
+    debug("====================== MdfeService ==========================");
+
     return resposta;
   }
 
@@ -56,6 +59,19 @@ export class MdfeService {
     }
 
     return this.repository.getCancellationStatuOfTheMDFe(token, id);
+  }
+
+
+  async cancellationOfTheMDFe(id: string, dadosCancelamento: any) {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Token de acesso ausente.");
+    }
+
+    console.log(`Iniciando serviço de cancelamento para o MDF-e ID: ${id} com dados: ${JSON.stringify(dadosCancelamento)}`);
+
+    return this.repository.cancellationOfTheMDFe(token, id, dadosCancelamento);
   }
 
   async downloadDamdfePDF(id: string) {

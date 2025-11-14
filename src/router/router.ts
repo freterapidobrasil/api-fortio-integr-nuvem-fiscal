@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCancellationStatuOfTheMDFe, DownloadDamdfePDF, emitirMdfe, encerrarMdfe, DownloadTheClosingPDF } from "../controller/MDFeController";
+import { getCancellationStatuOfTheMDFe, DownloadDamdfePDF, emitirMdfe, encerrarMdfe, DownloadTheClosingPDF, cancellationOfTheMDFe } from "../controller/MDFeController";
 import { downloadMdfe } from "../controller/MDFeController";
 import { emitirMdfeSchema } from "../middleware/mdfeSchema";
 import { validateBody } from "../middleware/validate";
@@ -110,6 +110,10 @@ router.get("/mdfe/:id/:tipo/:status", (req, res, next) => {
 // Rota para consultar cancelamento
 router.get("/api/mdfe/:id/consultar-cancelamento-MDF-e", (req, res, next) => {
   getCancellationStatuOfTheMDFe(req, res).catch(next);
+});
+
+router.post("/api/mdfe/:id/cancelamento", (req, res, next) => {
+  cancellationOfTheMDFe(req, res).catch(next);
 });
 
 // Rota para download DAMDFE
