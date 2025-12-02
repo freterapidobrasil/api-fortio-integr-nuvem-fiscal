@@ -18,16 +18,16 @@ export class MdfeService {
   }
 
   async emitirMdfe(dados: MdfeInput) {
-    debug("Iniciando emissão de MDF-e...", dados);
+    // debug("Iniciando emissão de MDF-e...", dados);
 
     const token = await getToken();
 
-    debug("Token obtido com sucesso.", token);
+    // debug("Token obtido com sucesso.", token);
     const repository = new MDFeRepository();
     const resposta = await repository.emitir(token, dados);
     debug("MDF-e emitido com sucesso");
 
-    console.log("MDF-e: ", resposta.data);
+    // console.log("MDF-e: ", resposta);
     return resposta;
   }
 
@@ -92,5 +92,17 @@ export class MdfeService {
     }
     
     return this.repository.DownloadTheClosingPDF(token, id);
+  }
+
+
+
+  async ListMDFe(cpfCnpj: string, ambiente?: string) {
+    const token = await getToken();
+
+    if (!token) {
+      throw new Error("Token de acesso ausente.");
+    }
+    
+    return this.repository.ListMDFe(token, cpfCnpj, ambiente);
   }
 }

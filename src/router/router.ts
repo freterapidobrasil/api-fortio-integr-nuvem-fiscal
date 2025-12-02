@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCancellationStatuOfTheMDFe, DownloadDamdfePDF, emitirMdfe, encerrarMdfe, DownloadTheClosingPDF, cancellationOfTheMDFe } from "../controller/MDFeController";
+import { getCancellationStatuOfTheMDFe, DownloadDamdfePDF, emitirMdfe, encerrarMdfe, DownloadTheClosingPDF, cancellationOfTheMDFe, ListMDFe,  } from "../controller/MDFeController";
 import { downloadMdfe } from "../controller/MDFeController";
 import { emitirMdfeSchema } from "../middleware/mdfeSchema";
 import { validateBody } from "../middleware/validate";
@@ -125,6 +125,13 @@ router.get("/api/mdfe/:id/DAMDFE/PDF", (req, res, next) => {
 router.get("/api/mdfe/:id/encerramento/pdf", (req, res, next) => {
   DownloadTheClosingPDF(req, res).catch(next);
 });
+
+router.get("/api/mdfe/listMDFe", (req, res, next) => {
+  ListMDFe(req, res).catch(next);
+});
+
+
+// https://api.nuvemfiscal.com.br/mdfe/nao-encerrados
 
 
 
