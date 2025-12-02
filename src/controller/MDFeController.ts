@@ -43,8 +43,8 @@ export const emitirMdfe = async (
 
     const dadosMdfe = req.body; // ← Aqui você pega os dados validados
 
-    console.log("Inicio do processo de envio de MDF-e");
-    console.log(dadosMdfe);
+    // console.log("Inicio do processo de envio de MDF-e");
+    // console.log(dadosMdfe);
 
     // if (mdfeResultadoMock) {
     //   console.log("⚠️ Retornando MOCK MDF-e para testes!");
@@ -353,6 +353,32 @@ export const DownloadTheClosingPDF = async (req: Request, res: Response) => {
     }
 
     const result = await service.DownloadTheClosingPDF(idMdfe.data?.id);
+    res.status(200).json(result);
+  } catch (error: any) {
+    if (error.status) {
+      debug("Erro da API ao fazer download do PDF de encerramento  do MDF-e: ", error.data);
+      res.status(error.status).json(error.data);
+    } else {
+      debug(
+        "Erro interno ao fazer download do PDF de encerramento do MDF-e: ",
+        error.message
+      );
+      res.status(500).json({
+        erro:
+          error.message || "Erro interno ao fazer download do PDF de encerramento do MDF-e",
+      });
+    }
+  }
+};
+
+
+export const ListMDFe = async (req: Request, res: Response) => {
+  const {cpf_cnpj, ambiente } = req.query;
+  
+  try {
+    const service = new MdfeService();
+
+    const result = await service.ListMDFe(cpf_cnpj as unknown as string, ambiente as unknown as string);
     res.status(200).json(result);
   } catch (error: any) {
     if (error.status) {

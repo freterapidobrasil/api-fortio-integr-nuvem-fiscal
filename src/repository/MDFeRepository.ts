@@ -14,11 +14,14 @@ export interface MdfeEncerramentoInput {
 export class MDFeRepository {
   async emitir(token: string, dados: MdfeInput) {
     console.log("OBJETO ENVIADO PARA NUVEM");
-    console.log(dados);
+    console.log(dados.infMDFe?.infModal?.rodo?.infANTT?.infPag);
+    console.log("===============================");
+
 
     try {
       //  'https://api.nuvemfiscal.com.br/mdfe',
       // https://api.sandbox.nuvemfiscal.com.br/mdfe
+
       const response = await axios.post(
         "https://api.sandbox.nuvemfiscal.com.br/mdfe",
         dados,
@@ -29,8 +32,9 @@ export class MDFeRepository {
           },
         }
       );
-
+   
       return response.data;
+      // return dados;
     } catch (error: any) {
       console.log("ERRO DETALHADO DA API:");
       console.log(JSON.stringify(error.response.data, null, 2));
@@ -178,6 +182,31 @@ export class MDFeRepository {
       const response = await axios.get(
         `https://api.sandbox.nuvemfiscal.com.br/mdfe/${id}/encerramento/pdf`,
         {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      console.error("ERRO AO CONSULTAR O CANCELAMENTO DO MDF-e:");
+      if (error.response) {
+        console.error(JSON.stringify(error.response.data, null, 2));
+        debug(error.response.data);
+        throw {
+          status: error.response.status,
+          data: error.response.data,
+        };
+      }
+    }
+  }
+
+
+
+  async ListMDFe(token: string, cpfCnpj: string, ambiente?: string) {
+    try {
+      const response = await axios.get(
+        `https://api.sandbox.nuvemfiscal.com.br/mdfe`,
+        {
+          params: { cpf_cnpj: cpfCnpj, ambiente: ambiente },
           headers: { Authorization: `Bearer ${token}` },
         }
       );
